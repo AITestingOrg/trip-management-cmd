@@ -4,13 +4,16 @@ spring:
     mongodb:
       database: trip-management-cmd
       host: ${MONGO_HOST:localhost}
-      port: 27017
+      port: ${MONGO_PORT:27017}
       username:
       password:
   application:
     name: trip-management-cmd
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
+
+server:
+  port: ${APP_PORT:8085}
 
 axon:
   cluster-name: ${spring.application.name}
@@ -23,8 +26,8 @@ axon:
             - TripAggregate
 
 amqp:
-    events:
-      host: ${RABBIT_HOST:localhost}
-      exchange-name: eventBus-tripcmd
-      queue-name: eventQueue-tripcmd
-      handlers:
+  events:
+    host: ${RABBIT_HOST:localhost}
+    exchange-name: eventBus
+    queue-name: eventQueue
+    handlers:

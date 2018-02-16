@@ -1,17 +1,15 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
 import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
 import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
 import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
 import org.aitesting.microservices.tripmanagement.common.TripStatus;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
+import org.axonframework.commandhandling.model.AggregateMember;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -31,6 +29,9 @@ public class Trip {
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
                 createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
     }
+
+    @AggregateMember
+    private CommandHandlers commandHandlers = new CommandHandlers();
 
     public Trip(){
     }
@@ -53,22 +54,6 @@ public class Trip {
 
     public TripStatus getStatus() {
         return status;
-    }
-
-    @CommandHandler
-    public void on(CreateTripCommand createTripCommand) {
-        apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
-                createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
-    }
-
-    @CommandHandler
-    public void on(CancelTripCommand cancelTripCommand) {
-        apply(new TripCanceledEvent((cancelTripCommand.getId())));
-    }
-
-    @CommandHandler
-    public void on(StartTripCommand startTripCommand) {
-        apply(new TripStartedEvent((startTripCommand.getId())));
     }
 
     @EventSourcingHandler
