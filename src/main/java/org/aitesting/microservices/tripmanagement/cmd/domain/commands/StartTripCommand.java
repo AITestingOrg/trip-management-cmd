@@ -4,10 +4,11 @@ import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 import java.util.UUID;
 
-public class CancelTripCommand {
+public class StartTripCommand {
     @TargetAggregateIdentifier
     private UUID id;
-    public CancelTripCommand(UUID id) {
+
+    public StartTripCommand(UUID id) {
         this.id = id;
     }
 

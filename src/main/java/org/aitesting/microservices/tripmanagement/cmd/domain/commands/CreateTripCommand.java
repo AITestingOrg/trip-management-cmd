@@ -1,6 +1,5 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.commands;
 
-import org.aitesting.microservices.tripmanagement.common.TripStatus;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 import java.util.UUID;

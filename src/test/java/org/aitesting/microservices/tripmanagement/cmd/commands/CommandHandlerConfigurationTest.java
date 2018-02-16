@@ -3,8 +3,10 @@ package org.aitesting.microservices.tripmanagement.cmd.commands;
 import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
 import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
 import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
+import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,35 +19,44 @@ import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CommandConfigurationTest {
+public class CommandHandlerConfigurationTest {
     private FixtureConfiguration<Trip> fixture;
+    private final String FROM_ADDRESS = "2250 north commerce parkway weston fl";
+    private final String TO_ADDRESS = "Miami International Airport";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fixture =  new AggregateTestFixture<>(Trip.class);
     }
 
     @Test
-    public void createTrip(){
+    public void createTrip() {
         UUID userID = UUID.randomUUID();
-        String fromAddress = "2250 north commerce parkway weston fl";
-        String toAddress = "Miami International Airport";
-        CreateTripCommand command = new CreateTripCommand(userID, fromAddress, toAddress);
+        CreateTripCommand command = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
         fixture.given()
                 .when(command)
-                .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), fromAddress, toAddress));
+                .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), FROM_ADDRESS, TO_ADDRESS));
     }
 
     @Test
-    public void cancelTrip(){
+    public void cancelTrip() {
         UUID userID = UUID.randomUUID();
-        String fromAddress = "2250 north commerce parkway weston fl";
-        String toAddress = "Miami International Airport";
-        CreateTripCommand createTripCommand = new CreateTripCommand(userID, fromAddress, toAddress);
+        CreateTripCommand createTripCommand = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
         CancelTripCommand cancelTripCommand = new CancelTripCommand(createTripCommand.getId());
 
         fixture.givenCommands(createTripCommand)
                 .when(cancelTripCommand)
                 .expectEvents(new TripCanceledEvent(createTripCommand.getId()));
+    }
+
+    @Test
+    public void startTrip() {
+        UUID userID = UUID.randomUUID();
+        CreateTripCommand createTripCommand = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
+        StartTripCommand startTripCommand = new StartTripCommand(createTripCommand.getId());
+
+        fixture.givenCommands(createTripCommand)
+                .when(startTripCommand)
+                .expectEvents(new TripStartedEvent(createTripCommand.getId()));
     }
 }

@@ -3,7 +3,7 @@ spring:
   data:
     mongodb:
       database: trip-management-cmd
-      host: localhost
+      host: ${MONGO_HOST:localhost}
       port: 27017
       username:
       password:
@@ -24,7 +24,7 @@ axon:
 
 amqp:
     events:
-      host: localhost
+      host: ${RABBIT_HOST:localhost}
       exchange-name: eventBus-tripcmd
       queue-name: eventQueue-tripcmd
       handlers:

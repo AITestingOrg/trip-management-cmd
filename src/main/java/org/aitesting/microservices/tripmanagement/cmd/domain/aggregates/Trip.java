@@ -2,8 +2,10 @@ package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
 import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
 import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
+import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
 import org.aitesting.microservices.tripmanagement.common.TripStatus;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
@@ -64,6 +66,11 @@ public class Trip {
         apply(new TripCanceledEvent((cancelTripCommand.getId())));
     }
 
+    @CommandHandler
+    public void on(StartTripCommand startTripCommand) {
+        apply(new TripStartedEvent((startTripCommand.getId())));
+    }
+
     @EventSourcingHandler
     public void on(TripCreatedEvent tripCreatedEvent) {
         id = tripCreatedEvent.getId();
@@ -76,5 +83,10 @@ public class Trip {
     @EventSourcingHandler
     public void on(TripCanceledEvent tripCanceledEvent) {
         status = TripStatus.CANCELED;
+    }
+
+    @EventSourcingHandler
+    public void on(TripStartedEvent tripStartedEvent) {
+        status = TripStatus.STARTED;
     }
 }
