@@ -11,7 +11,6 @@ import org.axonframework.commandhandling.CommandHandler;
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 public class CommandHandlers {
-
     @CommandHandler
     public void on(CancelTripCommand cancelTripCommand) {
         apply(new TripCanceledEvent((cancelTripCommand.getId())));

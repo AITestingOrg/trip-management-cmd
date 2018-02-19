@@ -1,6 +1,5 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.controllers;
 
-import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;

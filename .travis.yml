@@ -16,16 +16,18 @@ env:
 
 before_install:
   - echo "Testing Docker Hub credentials"
+  - docker -v
   - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
   - echo "Docker Hub credentials are working"
 
 after_success:
-  - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub"; fi
+  - export ACTUAL_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}
+  - echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
+  - if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub"; fi
   - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
   - export REPO=aista/trip-management-cmd
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST.$TRAVIS_BUILD_NUMBER ; fi`
+  - docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .
+  - docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG
+  - docker tag $REPO:$TRAVIS_COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REPO
