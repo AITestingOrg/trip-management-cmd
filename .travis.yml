@@ -21,7 +21,7 @@ before_install:
   - echo "Docker Hub credentials are working"
 
 after_success:
-  - export ACTUAL_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}
+  - export ACTUAL_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:TRAVIS_BRANCH}
   - echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
   - if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub"; fi
   - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
