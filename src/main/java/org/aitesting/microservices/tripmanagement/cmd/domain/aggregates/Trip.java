@@ -1,10 +1,7 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
-import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
-import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
-import org.aitesting.microservices.tripmanagement.common.TripStatus;
+import org.aitesting.microservices.tripmanagement.common.*;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.commandhandling.model.AggregateMember;
@@ -73,5 +70,10 @@ public class Trip {
     @EventSourcingHandler
     public void on(TripStartedEvent tripStartedEvent) {
         status = TripStatus.STARTED;
+    }
+
+    @EventSourcingHandler
+    public void on(TripCompletedEvent tripEndedEvent) {
+        status = TripStatus.COMPLETED;
     }
 }

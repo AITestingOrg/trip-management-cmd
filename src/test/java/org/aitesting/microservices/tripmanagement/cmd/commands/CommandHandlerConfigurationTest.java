@@ -2,11 +2,13 @@ package org.aitesting.microservices.tripmanagement.cmd.commands;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
 import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
 import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
 import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
+import org.aitesting.microservices.tripmanagement.common.TripCompletedEvent;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,5 +60,16 @@ public class CommandHandlerConfigurationTest {
         fixture.givenCommands(createTripCommand)
                 .when(startTripCommand)
                 .expectEvents(new TripStartedEvent(createTripCommand.getId()));
+    }
+
+    @Test
+    public void completeTrip() {
+        UUID userID = UUID.randomUUID();
+        CreateTripCommand createTripCommand = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
+        CompleteTripCommand completeTripCommand = new CompleteTripCommand(createTripCommand.getId());
+
+        fixture.givenCommands(createTripCommand)
+                .when(completeTripCommand)
+                .expectEvents(new TripCompletedEvent(createTripCommand.getId()));
     }
 }
