@@ -26,8 +26,6 @@ after_success:
   - if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub"; fi
   - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
   - export REPO=aista/trip-management-cmd
-  - export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST.$TRAVIS_BUILD_NUMBER ; fi`
-  - docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .
-  - docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG
-  - docker tag $REPO:$TRAVIS_COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest";else echo "" fi`
+  - docker build -f Dockerfile -t $REPO:$TAG .
   - docker push $REPO

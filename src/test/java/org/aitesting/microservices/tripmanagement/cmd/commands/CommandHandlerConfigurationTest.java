@@ -52,6 +52,15 @@ public class CommandHandlerConfigurationTest {
     }
 
     @Test
+    public void cancelTripWhenNoValidTrip() {
+        CancelTripCommand cancelTripCommand = new CancelTripCommand(UUID.randomUUID());
+
+        fixture.given()
+                .when(cancelTripCommand)
+                .expectNoEvents();
+    }
+
+    @Test
     public void startTrip() {
         UUID userID = UUID.randomUUID();
         CreateTripCommand createTripCommand = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
@@ -63,6 +72,15 @@ public class CommandHandlerConfigurationTest {
     }
 
     @Test
+    public void startTripWhenNoValidTrip() {
+        StartTripCommand startTripCommand = new StartTripCommand(UUID.randomUUID());
+
+        fixture.given()
+                .when(startTripCommand)
+                .expectNoEvents();
+    }
+
+    @Test
     public void completeTrip() {
         UUID userID = UUID.randomUUID();
         CreateTripCommand createTripCommand = new CreateTripCommand(userID, FROM_ADDRESS, TO_ADDRESS);
@@ -71,5 +89,14 @@ public class CommandHandlerConfigurationTest {
         fixture.givenCommands(createTripCommand)
                 .when(completeTripCommand)
                 .expectEvents(new TripCompletedEvent(createTripCommand.getId()));
+    }
+
+    @Test
+    public void completeTripWhenNoValidTrip() {
+        CompleteTripCommand completeTripCommand = new CompleteTripCommand(UUID.randomUUID());
+
+        fixture.given()
+                .when(completeTripCommand)
+                .expectNoEvents();
     }
 }
