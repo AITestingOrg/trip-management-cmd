@@ -19,23 +19,24 @@ public class TripController {
     private CommandGateway commandGateway;
 
     @PostMapping("trip")
-    public void addTrip(@RequestBody TripDto trip){
+    public @ResponseBody void addTrip(@RequestBody TripDto trip){
         commandGateway.send(
                 new CreateTripCommand(trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress()));
     }
 
     @PutMapping("trip/cancel/{id}")
-    public void cancelTrip(@PathVariable("id") UUID id){
+    public @ResponseBody void cancelTrip(@PathVariable("id") UUID id){
         commandGateway.send(new CancelTripCommand(id));
+
     }
 
     @PutMapping("trip/start/{id}")
-    public void startTrip(@PathVariable("id") UUID id){
+    public @ResponseBody void startTrip(@PathVariable("id") UUID id){
         commandGateway.send(new StartTripCommand(id));
     }
 
     @PutMapping("trip/completed/{id}")
-    public void completeTrip(@PathVariable("id") UUID id){
+    public @ResponseBody void completeTrip(@PathVariable("id") UUID id){
         commandGateway.send(new CompleteTripCommand(id));
     }
 }
