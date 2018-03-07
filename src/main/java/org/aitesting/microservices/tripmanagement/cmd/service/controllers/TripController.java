@@ -7,36 +7,47 @@ import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripC
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("api")
 public class TripController {
     @Autowired
     private CommandGateway commandGateway;
 
     @PostMapping("trip")
-    public @ResponseBody void addTrip(@RequestBody TripDto trip){
-        commandGateway.send(
-                new CreateTripCommand(trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress()));
+    public ResponseEntity<Map<String, Object>> addTrip(@RequestBody TripDto trip){
+        CreateTripCommand createTripCommand = new CreateTripCommand(trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
+        commandGateway.send(createTripCommand);
+        Map<String, Object> json = new HashMap<>();
+        json.put("success", true);
+        json.put("id", createTripCommand.getId());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=UTF-8");
+
+        return (new ResponseEntity<>(json, headers, HttpStatus.OK));
     }
 
     @PutMapping("trip/cancel/{id}")
-    public @ResponseBody void cancelTrip(@PathVariable("id") UUID id){
+    public void cancelTrip(@PathVariable("id") UUID id){
         commandGateway.send(new CancelTripCommand(id));
-
     }
 
     @PutMapping("trip/start/{id}")
-    public @ResponseBody void startTrip(@PathVariable("id") UUID id){
+    public void startTrip(@PathVariable("id") UUID id){
         commandGateway.send(new StartTripCommand(id));
     }
 
     @PutMapping("trip/completed/{id}")
-    public @ResponseBody void completeTrip(@PathVariable("id") UUID id){
+    public void completeTrip(@PathVariable("id") UUID id){
         commandGateway.send(new CompleteTripCommand(id));
     }
 }
