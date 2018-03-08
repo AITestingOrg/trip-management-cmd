@@ -1,14 +1,12 @@
-package org.aitesting.microservices.tripmanagement.cmd.contract;
+package org.aitesting.microservices.tripmanagement.cmd.provider;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.aitesting.microservices.tripmanagement.cmd.TripManagementCmdApplication;
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.context.WebApplicationContext;
 

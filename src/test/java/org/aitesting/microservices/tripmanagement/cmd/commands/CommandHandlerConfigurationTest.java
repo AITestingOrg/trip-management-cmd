@@ -5,10 +5,10 @@ import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTrip
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
-import org.aitesting.microservices.tripmanagement.common.TripCanceledEvent;
-import org.aitesting.microservices.tripmanagement.common.TripCreatedEvent;
-import org.aitesting.microservices.tripmanagement.common.TripStartedEvent;
-import org.aitesting.microservices.tripmanagement.common.TripCompletedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCanceledEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCreatedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripStartedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;

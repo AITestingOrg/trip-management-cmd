@@ -1,7 +1,7 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.common.*;
+import org.aitesting.microservices.tripmanagement.common.events.*;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.commandhandling.model.AggregateMember;
