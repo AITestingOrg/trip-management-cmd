@@ -6,16 +6,16 @@ import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTr
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
 import org.aitesting.microservices.tripmanagement.common.events.TripCanceledEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
 import org.aitesting.microservices.tripmanagement.common.events.TripCreatedEvent;
 import org.aitesting.microservices.tripmanagement.common.events.TripStartedEvent;
-import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
 import org.axonframework.test.aggregate.AggregateTestFixture;
+import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.axonframework.test.aggregate.FixtureConfiguration;
 
 import java.util.UUID;
 
