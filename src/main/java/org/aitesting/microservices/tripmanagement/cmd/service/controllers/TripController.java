@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class TripController {
     private CommandGateway commandGateway;
 
     @PostMapping("trip")
-    public ResponseEntity<Map<String, Object>> addTrip(@RequestBody TripDto trip){
+    public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip){
         CreateTripCommand createTripCommand = new CreateTripCommand(trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
         commandGateway.send(createTripCommand);
         Map<String, Object> json = new HashMap<>();
