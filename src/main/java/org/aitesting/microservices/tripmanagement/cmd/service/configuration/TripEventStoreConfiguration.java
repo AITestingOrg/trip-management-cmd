@@ -9,15 +9,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class TripEventStoreConfiguration extends AmqpEventPublisherConfiguration<Trip, TripCommandHandler> {
+public class TripEventStoreConfiguration
+        extends AmqpEventPublisherConfiguration<Trip, TripCommandHandler> {
     public TripEventStoreConfiguration() {
         super(Trip.class);
     }
 
     @Override
     @Bean
-    public TripCommandHandler commandHandler(EventSourcingRepository eventSourcingRepository, CommandBus commandBus) {
-        TripCommandHandler commandHandler = new TripCommandHandler(eventSourcingRepository, commandBus);
+    public TripCommandHandler commandHandler(
+            EventSourcingRepository eventSourcingRepository, CommandBus commandBus) {
+        TripCommandHandler commandHandler
+                = new TripCommandHandler(eventSourcingRepository, commandBus);
         commandHandler.subscribe();
         return commandHandler;
     }

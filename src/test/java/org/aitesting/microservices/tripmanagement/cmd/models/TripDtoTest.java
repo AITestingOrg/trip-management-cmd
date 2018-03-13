@@ -1,24 +1,24 @@
 package org.aitesting.microservices.tripmanagement.cmd.models;
 
+import java.util.UUID;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.UUID;
 
 public class TripDtoTest {
-    private final String FROM = "from";
-    private final String TO = "to";
-    private final UUID USER_ID = UUID.randomUUID();
+    private final String from = "from";
+    private final String to = "to";
+    private final UUID userId = UUID.randomUUID();
 
     @Test
     public void createdTripDtoHasCorrectValues() {
         //given
-        TripDto trip = new TripDto(FROM, TO, USER_ID);
+        TripDto trip = new TripDto(from, to, userId);
 
         //assert
-        Assert.assertEquals(trip.getOriginAddress(), FROM);
-        Assert.assertEquals(trip.getDestinationAddress(), TO);
-        Assert.assertEquals(trip.getUserId(), USER_ID);
+        Assert.assertEquals(trip.getOriginAddress(), from);
+        Assert.assertEquals(trip.getDestinationAddress(), to);
+        Assert.assertEquals(trip.getUserId(), userId);
     }
 }

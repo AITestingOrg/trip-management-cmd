@@ -1,8 +1,7 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.commands;
 
-import org.axonframework.commandhandling.TargetAggregateIdentifier;
-
 import java.util.UUID;
+import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 public class CreateTripCommand {
     @TargetAggregateIdentifier
@@ -11,7 +10,7 @@ public class CreateTripCommand {
     private String originAddress;
     private String destinationAddress;
 
-    public CreateTripCommand(UUID userId, String originAddress, String destinationAddress){
+    public CreateTripCommand(UUID userId, String originAddress, String destinationAddress) {
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.originAddress = originAddress;

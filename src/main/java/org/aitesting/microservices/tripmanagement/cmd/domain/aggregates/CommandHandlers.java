@@ -1,12 +1,14 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
+import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
-import org.aitesting.microservices.tripmanagement.common.events.*;
+import org.aitesting.microservices.tripmanagement.common.events.TripCanceledEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripStartedEvent;
 import org.axonframework.commandhandling.CommandHandler;
-
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 public class CommandHandlers {
     @CommandHandler
