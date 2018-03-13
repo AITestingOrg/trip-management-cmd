@@ -1,10 +1,20 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class TripDto {
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String originAddress;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String destinationAddress;
+    @NotNull
     private UUID userId;
 
     public TripDto() {
