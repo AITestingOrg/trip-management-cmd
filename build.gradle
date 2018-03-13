@@ -22,7 +22,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'groovy'
 apply plugin: 'spring-cloud-contract'
 apply plugin: "jacoco"
-
+apply plugin: 'checkstyle'
 
 group = 'org.aitesting.microservices'
 version = '0.0.1-SNAPSHOT'
@@ -60,6 +60,21 @@ dependencies {
 contracts {
 	baseClassMappings {
 		baseClassMapping(".*tripmanagement.*", "org.aitesting.microservices.tripmanagement.cmd.provider.TripContractBase")
+	}
+}
+
+checkstyle {
+	configFile = new File(rootDir, "checkstyle.xml")
+}
+
+checkstyleMain {
+	source = fileTree('src/main') {
+		excludes = ['*.yml']
+	}
+}
+checkstyleTest {
+	source = fileTree('src/test') {
+		excludes = ['*.yml']
 	}
 }
 
