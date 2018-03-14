@@ -1,16 +1,19 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.aggregates;
 
+import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+
+import java.util.UUID;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.common.events.*;
+import org.aitesting.microservices.tripmanagement.common.events.TripCanceledEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripCreatedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripStartedEvent;
+import org.aitesting.microservices.tripmanagement.common.events.TripStatus;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.commandhandling.model.AggregateMember;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-
-import java.util.UUID;
-
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 @Aggregate
 public class Trip {
@@ -22,7 +25,7 @@ public class Trip {
     private TripStatus status;
 
     @CommandHandler
-    public Trip(CreateTripCommand createTripCommand){
+    public Trip(CreateTripCommand createTripCommand) {
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
                 createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
     }

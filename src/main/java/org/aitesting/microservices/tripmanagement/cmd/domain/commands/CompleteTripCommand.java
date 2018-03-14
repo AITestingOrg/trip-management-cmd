@@ -1,8 +1,7 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.commands;
 
-import org.axonframework.commandhandling.TargetAggregateIdentifier;
-
 import java.util.UUID;
+import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 public class CompleteTripCommand {
     @TargetAggregateIdentifier
@@ -12,5 +11,7 @@ public class CompleteTripCommand {
         this.id = id;
     }
 
-    public UUID getId() { return id; }
+    public UUID getId() {
+        return id;
+    }
 }
