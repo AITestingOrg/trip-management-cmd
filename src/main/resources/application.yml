@@ -29,3 +29,17 @@ amqp:
     exchange-name: eventBus
     queue-name: eventQueue
     handlers:
+
+logging:
+  level:
+    root: WARN
+    org:
+      springframework:
+        security: DEBUG
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+      hibernate: DEBUG
+      apache:
+        commons:
+          dbcp2: DEBUG
