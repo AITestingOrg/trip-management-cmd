@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  mongo:
+    image: 'mongo:3.4.1'
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'mongo:/data/db'
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  trip-management-query:
+    image: aista/trip-management-query
+    container_name: 'trip-management-query'
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - MONGO_HOST=mongo
+    ports:
+      - "8080"
+    depends_on:
+      - rabbitmq
+      - mongo
+volumes:
+  mongo:
