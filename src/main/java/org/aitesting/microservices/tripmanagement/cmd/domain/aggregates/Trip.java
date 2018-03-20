@@ -14,9 +14,13 @@ import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.commandhandling.model.AggregateMember;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Aggregate
 public class Trip {
+    private static final Logger logger = LoggerFactory.getLogger(Trip.class);
+
     @AggregateIdentifier
     private UUID id;
     private String originAddress;
@@ -26,6 +30,7 @@ public class Trip {
 
     @CommandHandler
     public Trip(CreateTripCommand createTripCommand) {
+        logger.trace(String.format("Dispatching TripCreatedEvent %s", createTripCommand.getId()));
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
                 createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
     }
@@ -58,6 +63,7 @@ public class Trip {
 
     @EventSourcingHandler
     public void on(TripCreatedEvent tripCreatedEvent) {
+        logger.trace(String.format("Sourcing TripCreated %s", tripCreatedEvent.getId()));
         id = tripCreatedEvent.getId();
         originAddress = tripCreatedEvent.getOriginAddress();
         destinationAddress = tripCreatedEvent.getDestinationAddress();
@@ -67,16 +73,19 @@ public class Trip {
 
     @EventSourcingHandler
     public void on(TripCanceledEvent tripCanceledEvent) {
+        logger.trace(String.format("Sourcing TripCancelled  %s", tripCanceledEvent.getId()));
         status = TripStatus.CANCELED;
     }
 
     @EventSourcingHandler
     public void on(TripStartedEvent tripStartedEvent) {
+        logger.trace(String.format("Sourcing TripStarted %s", tripStartedEvent.getId()));
         status = TripStatus.STARTED;
     }
 
     @EventSourcingHandler
     public void on(TripCompletedEvent tripEndedEvent) {
+        logger.trace(String.format("Sourcing TripCompleted %s", tripEndedEvent.getId()));
         status = TripStatus.COMPLETED;
     }
 }
