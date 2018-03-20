@@ -25,13 +25,16 @@ apply plugin: "jacoco"
 apply plugin: 'checkstyle'
 
 group = 'org.aitesting.microservices'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
 }
 
+ext {
+	springCloudVersion = 'Edgware.SR2'
+}
 
 dependencies {
 	// TODO local files dependencies while things are not up.
@@ -48,6 +51,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-amqp')
+	compile('org.springframework.cloud:spring-cloud-starter-eureka')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -55,6 +60,12 @@ dependencies {
 	testCompile "org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}"
 	testCompile "org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}"
 	testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 contracts {

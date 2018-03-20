@@ -6,7 +6,7 @@ Contract.make {
     description("When a POST request to api/trip missing destination should return 400")
     request {
         method 'POST'
-        url '/api/trip'
+        url '/api/v1/trip'
         headers{
             contentType(applicationJson())
         }

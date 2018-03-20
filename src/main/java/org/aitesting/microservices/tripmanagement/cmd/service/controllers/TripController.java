@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/v1")
 public class TripController {
     @Autowired
     private CommandGateway commandGateway;
@@ -28,13 +28,12 @@ public class TripController {
                 trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
         commandGateway.send(createTripCommand);
         Map<String, Object> json = new HashMap<>();
-        json.put("success", true);
         json.put("id", createTripCommand.getId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=UTF-8");
 
-        return (new ResponseEntity<>(json, headers, HttpStatus.OK));
+        return (new ResponseEntity<>(json, headers, HttpStatus.CREATED));
     }
 
     @PutMapping("trip/cancel/{id}")

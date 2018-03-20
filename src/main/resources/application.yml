@@ -10,6 +10,11 @@ spring:
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+
 server:
   port: ${APP_PORT:8080}
 
@@ -43,3 +48,11 @@ logging:
       apache:
         commons:
           dbcp2: DEBUG
+
+---
+spring:
+  profiles: test
+
+eureka:
+  client:
+    enabled: false

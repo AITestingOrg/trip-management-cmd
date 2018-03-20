@@ -6,7 +6,7 @@ Contract.make {
     description("When a POST request to api/tripmanagement should return 200")
     request {
         method 'POST'
-        url '/api/trip'
+        url '/api/v1/trip'
         headers{
             contentType(applicationJson())
         }
@@ -17,9 +17,8 @@ Contract.make {
         )
     }
     response {
-        status 200
+        status 201
         body(
-                "success": true,
                 "id": regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")
         )
         headers {
