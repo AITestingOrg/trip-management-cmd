@@ -23,5 +23,11 @@ services:
     depends_on:
       - rabbitmq
       - mongo
+      - discovery-service
+  discovery-service:
+    image: springcloud/eureka
+    ports:
+      - "8761:8761"
+    container_name: eureka-server
 volumes:
   mongo:

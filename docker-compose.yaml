@@ -23,6 +23,7 @@ services:
     depends_on:
       - rabbitmq
       - mongo
+      - discovery-service
   trip-management-cmd:
     build: ./
     container_name: 'trip-management-cmd'
@@ -35,5 +36,12 @@ services:
       - rabbitmq
       - mongo
       - trip-management-query
+      - discovery-service
+  discovery-service:
+    image: springcloud/eureka
+    ports:
+      - "8761:8761"
+    container_name: eureka-server
+
 volumes:
   mongo:

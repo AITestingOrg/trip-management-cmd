@@ -6,7 +6,7 @@ Contract.make {
     description("When a PUT request for api/trip/completed/{id} with invalid id should return 400")
     request {
         method 'PUT'
-        url '/api/trip/completed/badIdString'
+        url '/api/v1/trip/completed/badIdString'
     }
     response {
         status 400
