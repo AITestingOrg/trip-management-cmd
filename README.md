@@ -28,3 +28,7 @@ To run this project from docker:
  * Assemble this project.
  * Run ```docker-compose up --build -f docker-compose-dev.yml``` from the root project.
  * Run the Gradle task 'application/bootrun' from IntelliJ.
+ 
+ # Swagger.
+ 
+ With the app running, go to http://localhost:8080/swagger-ui.html or the corresponding port for it to see the UI or head to http://localhost:8080/v2/api-docs to adquire the source json.
