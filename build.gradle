@@ -3,6 +3,7 @@ buildscript {
 		springBootVersion = '1.5.10.RELEASE'
 		verifierVersion = '1.2.3.RELEASE'
 		axonVersion = '3.1.2'
+		axonConfigVersion = '0.0.1'
 		springfoxVersion = '2.7.0'
 	}
 	repositories {
@@ -30,7 +31,7 @@ version = '0.0.1'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+	jcenter()
 }
 
 ext {
@@ -39,9 +40,9 @@ ext {
 
 dependencies {
 	// TODO local files dependencies while things are not up.
-	compile files('libs/library--axon-configuration-0.0.1.jar')
 	compile files('libs/trip-management-common-1.0-SNAPSHOT.jar')
 
+	compile("org.aist:configurations:${axonConfigVersion}")
 	compile("org.axonframework:axon-core:${axonVersion}")
 	compile("org.axonframework:axon-mongo:${axonVersion}")
 	compile("org.axonframework:axon-spring-boot-starter:${axonVersion}")
@@ -64,6 +65,17 @@ dependencies {
 	testCompile "org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}"
 	testCompile "org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}"
 	testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testCompile ('org.springframework.cloud:spring-cloud-starter-eureka-server')
+}
+
+ext {
+	springCloudVersion = 'Edgware.SR2'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 dependencyManagement {
