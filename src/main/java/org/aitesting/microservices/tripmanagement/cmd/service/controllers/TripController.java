@@ -29,7 +29,8 @@ public class TripController {
 
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
-        logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s", trip.getOriginAddress(), trip.getDestinationAddress(), trip.getUserId()));
+        logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s",
+                trip.getOriginAddress(), trip.getDestinationAddress(), trip.getUserId()));
         CreateTripCommand createTripCommand = new CreateTripCommand(
                 trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
         commandGateway.send(createTripCommand);
