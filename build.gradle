@@ -40,7 +40,7 @@ ext {
 dependencies {
 	// TODO local files dependencies while things are not up.
 	compile files('libs/library--axon-configuration-0.0.1.jar')
-	compile files('libs/trip-management-common-1.0-SNAPSHOT.jar')
+	compile files('libs/trip-management-common-1.0.jar')
 
 	compile("org.axonframework:axon-core:${axonVersion}")
 	compile("org.axonframework:axon-mongo:${axonVersion}")
