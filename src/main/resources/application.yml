@@ -35,7 +35,7 @@ amqp:
     host: ${RABBIT_HOST:localhost}
     exchange-name: eventBus
     queue-name: eventQueue
-    handlers:
+    handlers: org.aistesting.microservices.tripmanagement.cmd.domain.events
 
 logging:
   level:
