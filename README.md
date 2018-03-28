@@ -4,6 +4,9 @@ Trip Management Command manages trips and invoices. It is the core service of th
 
 ## Features
 * Create Trips
+* Update Trips
+    * Update Destination
+    * Update Origin
 * Start Trips
 * Cancel Trips
 * End Trips

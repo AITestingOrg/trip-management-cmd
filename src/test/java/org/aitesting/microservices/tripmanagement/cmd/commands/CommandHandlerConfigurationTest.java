@@ -4,12 +4,15 @@ import java.util.UUID;
 import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
+import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
 import org.aitesting.microservices.tripmanagement.common.events.*;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,6 +25,10 @@ public class CommandHandlerConfigurationTest {
     private final String fromAddress = "2250 north commerce parkway weston fl";
     private final String toAddress = "Miami International Airport";
     private final UUID userId = UUID.randomUUID();
+
+    @InjectMocks
+    @Mock
+    private CalculationService calculationService;
 
     @Before
     public void setUp() {
