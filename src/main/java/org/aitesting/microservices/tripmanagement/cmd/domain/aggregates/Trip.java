@@ -130,8 +130,6 @@ public class Trip {
         logger.trace(String.format("Sourcing TripUpdated %s", tripCreatedEvent.getId()));
         originAddress = tripCreatedEvent.getOriginAddress();
         destinationAddress = tripCreatedEvent.getDestinationAddress();
-        userId = tripCreatedEvent.getUserId();
-        status = TripStatus.CREATED;
     }
 
     @EventSourcingHandler

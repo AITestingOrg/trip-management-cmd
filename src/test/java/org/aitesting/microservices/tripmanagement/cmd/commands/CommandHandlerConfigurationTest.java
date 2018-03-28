@@ -2,14 +2,9 @@ package org.aitesting.microservices.tripmanagement.cmd.commands;
 
 import java.util.UUID;
 import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
-import org.aitesting.microservices.tripmanagement.common.events.TripCanceledEvent;
-import org.aitesting.microservices.tripmanagement.common.events.TripCompletedEvent;
-import org.aitesting.microservices.tripmanagement.common.events.TripCreatedEvent;
-import org.aitesting.microservices.tripmanagement.common.events.TripStartedEvent;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
+import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
+import org.aitesting.microservices.tripmanagement.common.events.*;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
@@ -39,6 +34,17 @@ public class CommandHandlerConfigurationTest {
         fixture.given()
                 .when(command)
                 .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), fromAddress, toAddress));
+    }
+
+    @Test
+    public void updateTrip() {
+        CreateTripCommand command = new CreateTripCommand(userId, fromAddress, toAddress);
+        String newFromAddr = "New!";
+        String newToAddr = "New Too!";
+        UUID newUserId = UUID.randomUUID();
+        fixture.given(command)
+                .when(new UpdateTripCommand(command.getId(), new TripDto(newFromAddr, newToAddr, newUserId)))
+                .expectEvents(new TripUpdatedEvent(command.getId(), command.getUserId(), newFromAddr, newToAddr, null));
     }
 
     @Test

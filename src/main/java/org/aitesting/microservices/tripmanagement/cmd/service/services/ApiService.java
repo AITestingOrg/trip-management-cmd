@@ -8,6 +8,7 @@ import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public abstract class ApiService<T, K> {
     protected boolean useSsl;
 
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
     public ApiService() {}
