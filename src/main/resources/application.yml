@@ -1,4 +1,6 @@
-# Mongo config
+aist:
+  use_ssl: false
+
 spring:
   data:
     mongodb:

@@ -5,10 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.validation.Valid;
 
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
@@ -29,7 +26,10 @@ public class TripController {
 
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
-        logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s", trip.getOriginAddress(), trip.getDestinationAddress(), trip.getUserId()));
+        logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s",
+                trip.getOriginAddress(),
+                trip.getDestinationAddress(),
+                trip.getUserId()));
         CreateTripCommand createTripCommand = new CreateTripCommand(
                 trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
         commandGateway.send(createTripCommand);
@@ -62,5 +62,12 @@ public class TripController {
         logger.info(String.format("Request to complete trip %s", id));
         commandGateway.send(new CompleteTripCommand(id));
         logger.trace(String.format("Dispatched CompleteTripCommand %s", id));
+    }
+
+    @PutMapping("trip/{id}")
+    public void updateTrip(@PathVariable("id") UUID id, @RequestBody TripDto trip) {
+        logger.info(String.format("Request to update trip %s", id));
+        commandGateway.send(new UpdateTripCommand(id, trip));
+        logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
     }
 }

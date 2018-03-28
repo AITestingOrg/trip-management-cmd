@@ -2,6 +2,8 @@ package org.aitesting.microservices.tripmanagement.cmd.domain.models;
 
 import java.util.UUID;
 import javax.validation.constraints.NotNull;
+
+import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,6 +19,8 @@ public class TripDto {
     @NotNull
     private UUID userId;
 
+    private TripInvoice tripEstimate;
+
     public TripDto() {
     }
 
@@ -24,6 +28,13 @@ public class TripDto {
         this.originAddress = originAddress;
         this.destinationAddress = destinationAddress;
         this.userId = userId;
+    }
+
+    public TripDto(String originAddress, String destinationAddress, UUID userId, TripInvoice tripEstimate) {
+        this.originAddress = originAddress;
+        this.destinationAddress = destinationAddress;
+        this.userId = userId;
+        this.tripEstimate = tripEstimate;
     }
 
     public String getOriginAddress() {
@@ -48,5 +59,9 @@ public class TripDto {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+    public TripInvoice getTripEstimate() {
+        return tripEstimate;
     }
 }
