@@ -5,24 +5,18 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 import java.util.UUID;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
-import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
 import org.aitesting.microservices.tripmanagement.common.events.*;
 import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
-import org.axonframework.commandhandling.model.AggregateMember;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Aggregate
-public class Trip {
-    private static final Logger logger = LoggerFactory.getLogger(Trip.class);
-
-    @Autowired
-    private CalculationService calculationService;
+public class TripAggregate {
+    private static final Logger logger = LoggerFactory.getLogger(TripAggregate.class);
 
     @AggregateIdentifier
     private UUID id;
@@ -33,14 +27,13 @@ public class Trip {
     private TripInvoice estimateInvoice;
 
     @CommandHandler
-    public Trip(CreateTripCommand createTripCommand) {
+    public TripAggregate(CreateTripCommand createTripCommand) {
         logger.trace(String.format("Dispatching TripCreatedEvent %s", createTripCommand.getId()));
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
                 createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
     }
 
-    public Trip(){
-    }
+    public TripAggregate(){}
 
     public UUID getId() {
         return id;
@@ -92,7 +85,7 @@ public class Trip {
     public void on(UpdateTripCommand updateTripCommand) {
         logger.trace(String.format("Dispatching UpdateTrip %s", updateTripCommand.getId()));
         apply(new TripUpdatedEvent(updateTripCommand.getId(),
-                updateTripCommand.getTrip().getUserId(),
+                userId,
                 updateTripCommand.getTrip().getOriginAddress(),
                 updateTripCommand.getTrip().getDestinationAddress(),
                 updateTripCommand.getTrip().getTripEstimate()));
@@ -101,14 +94,8 @@ public class Trip {
     @CommandHandler
     public void on(EstimateTripCommand estimateTripCommand) {
         logger.trace("Estimate Trip Command {}", estimateTripCommand.getId());
-        try {
-            TripInvoice invoice = calculationService.getInvoice(this);
-            apply(new TripEstimatedEvent(estimateTripCommand.getId(), invoice));
-            logger.info("Estimate Trip Command Success {}", estimateTripCommand.getId());
-        } catch (Exception e) {
-            apply(new TripEstimatedEvent(estimateTripCommand.getId(), null));
-            logger.error("Estimate Trip Command ERROR {}: {}", estimateTripCommand.getId(), e.getMessage());
-        }
+        apply(new TripEstimatedEvent(estimateTripCommand.getId(), estimateTripCommand.getInvoice()));
+        logger.info("Estimate Trip Command Success {}", estimateTripCommand.getId());
     }
 
     /*

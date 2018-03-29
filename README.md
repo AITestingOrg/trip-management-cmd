@@ -29,7 +29,7 @@ To run this project from docker:
  To run this project from docker:
  * Make sure that the Docker daemon is installed and running.
  * Assemble this project.
- * Run ```docker-compose up --build -f docker-compose-dev.yml``` from the root project.
+ * Run ```docker-compose -f docker-compose-dev.yml up --build ``` from the root project.
  * Run the Gradle task 'application/bootrun' from IntelliJ.
  
  # Swagger.

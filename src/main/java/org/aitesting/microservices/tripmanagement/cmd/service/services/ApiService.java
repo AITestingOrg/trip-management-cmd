@@ -1,14 +1,10 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
-import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +19,12 @@ public abstract class ApiService<T, K> {
     protected boolean useSsl;
 
     @Autowired
-    @LoadBalanced
     private RestTemplate restTemplate;
 
-    public ApiService() {}
+    public ApiService() {
+    }
 
-    public T getOne(String path) throws URISyntaxException {
+    public T getOne(String path) {
         ResponseEntity<T> exchange = this.restTemplate.exchange(
             buildUri(service.name(), path),
             HttpMethod.GET,
@@ -37,7 +33,7 @@ public abstract class ApiService<T, K> {
         return exchange.getBody();
     }
 
-    public List<T> getMany(String path) throws URISyntaxException {
+    public List<T> getMany(String path) {
         ResponseEntity<List<T>> exchange = this.restTemplate.exchange(
             buildUri(service.name(), path),
             HttpMethod.GET,
@@ -46,33 +42,37 @@ public abstract class ApiService<T, K> {
         return exchange.getBody();
     }
 
-    public T create(String path, K obj) throws URISyntaxException {
+    public T create(String path, K obj) {
         ResponseEntity<T> exchange = this.restTemplate.exchange(
-            buildUri(service.name(), path).toString(),
+            buildUri(service.name(), path),
             HttpMethod.POST,
             null,
-            new ParameterizedTypeReference() {},
+            new ParameterizedTypeReference<T>() {},
             obj);
         return exchange.getBody();
     }
 
-    public void update(String path, K obj) throws URISyntaxException {
+    public void update(String path, K obj) {
         this.restTemplate.put(buildUri(service.name(), path), obj);
     }
 
-    public void delete(String path) throws URISyntaxException {
+    public void delete(String path) {
         this.restTemplate.delete(buildUri(service.name(), path));
     }
 
-    private URI buildUri(String appName, String path) throws URISyntaxException {
-        URIBuilder builder = new URIBuilder();
+    private String buildUri(String appName, String path) {
+        // this method does not use URI since the app_name is usually not a valid URI Hostname
+        String url;
         if (useSsl) {
-            builder.setScheme("https");
+            url = "https://";
         } else {
-            builder.setScheme("http");
+            url = "http://";
         }
-        builder.setHost(appName);
-        builder.setPath(path);
-        return builder.build();
+        url += appName.toLowerCase();
+        if (path.charAt(0) != '/') {
+            path = "/" + path;
+        }
+        url += path;
+        return url;
     }
 }

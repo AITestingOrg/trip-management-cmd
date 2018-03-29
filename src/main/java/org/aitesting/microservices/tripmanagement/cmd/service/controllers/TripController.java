@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
+import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
+import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ public class TripController {
 
     @Autowired
     private CommandGateway commandGateway;
+
+    @Autowired
+    CalculationService calculationService;
 
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
@@ -65,9 +70,18 @@ public class TripController {
     }
 
     @PutMapping("trip/{id}")
-    public void updateTrip(@PathVariable("id") UUID id, @RequestBody TripDto trip) {
+    public void updateTrip(@PathVariable("id") UUID id, @RequestBody TripDto trip) throws Exception {
         logger.info(String.format("Request to update trip %s", id));
-        commandGateway.send(new UpdateTripCommand(id, trip));
-        logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
+        // todo: move this logic to a service
+        try {
+            // this is done outside of the aggregate to avoid blocking it.
+            TripInvoice invoiceEstimate = calculationService.getInvoice(trip);
+            trip.setEstimate(invoiceEstimate);
+            commandGateway.send(new UpdateTripCommand(id, trip));
+            commandGateway.send(new EstimateTripCommand(id, trip));
+            logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
+        } catch (Exception e) {
+            throw new Exception("Opps, something went wrong. Please try again later.");
+        }
     }
 }

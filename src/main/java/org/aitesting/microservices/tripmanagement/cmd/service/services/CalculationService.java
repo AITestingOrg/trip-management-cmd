@@ -1,11 +1,10 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
-import java.net.URISyntaxException;
 import java.util.Date;
 
-import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.Trip;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.CalculationDto;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
+import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +12,13 @@ import org.springframework.stereotype.Service;
 public class CalculationService extends ApiService<TripInvoice, CalculationDto> {
 
     public CalculationService() {
-        service = Services.CALCULATION_SERVICE;
+        service = Services.CALCULATIONSERVICE;
     }
 
-    public TripInvoice getInvoice(Trip trip) throws URISyntaxException {
-        return create("cost", new CalculationDto(trip.getOriginAddress(), trip.getDestinationAddress(), new Date()));
+    public TripInvoice getInvoice(TripDto tripDto) {
+        return create("cost", new CalculationDto(
+                tripDto.getOriginAddress(),
+                tripDto.getDestinationAddress(),
+                new Date()));
     }
 }

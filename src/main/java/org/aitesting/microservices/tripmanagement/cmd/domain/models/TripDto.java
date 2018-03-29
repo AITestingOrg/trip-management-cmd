@@ -64,4 +64,8 @@ public class TripDto {
     public TripInvoice getTripEstimate() {
         return tripEstimate;
     }
+
+    public void setEstimate(TripInvoice estimate) {
+        this.tripEstimate = estimate;
+    }
 }

@@ -15,7 +15,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://discovery-service:8761/eureka/
 
 server:
   port: ${APP_PORT:8080}
@@ -35,7 +35,7 @@ amqp:
     host: ${RABBIT_HOST:localhost}
     exchange-name: eventBus
     queue-name: eventQueue
-    handlers: org.aistesting.microservices.tripmanagement.cmd.domain.events
+    handlers: org.aistesting.microservices.tripmanagement.cmd.domain.eventhandlers
 
 logging:
   level:
