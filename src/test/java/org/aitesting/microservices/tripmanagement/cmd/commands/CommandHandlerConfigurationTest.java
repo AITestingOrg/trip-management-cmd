@@ -92,6 +92,16 @@ public class CommandHandlerConfigurationTest {
     }
 
     @Test
+    public void estimateTrip() {
+        TripInvoice tripInvoice = new TripInvoice(fromAddress, toAddress, 10, 5, 30, new Date());
+        CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress);
+        EstimateTripCommand updateCommand = new EstimateTripCommand(createCommand.getId(), new TripDto(fromAddress, toAddress, userId, tripInvoice));
+        fixture.givenCommands(createCommand)
+                .when(updateCommand)
+                .expectEvents(new TripEstimatedEvent(createCommand.getId(), updateCommand.getInvoice()));
+    }
+
+    @Test
     public void cancelTrip() {
         CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress);
         CancelTripCommand cancelTripCommand = new CancelTripCommand(createTripCommand.getId());
