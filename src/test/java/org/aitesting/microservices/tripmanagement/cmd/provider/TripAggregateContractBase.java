@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @Profile("test")
 @SpringBootTest(classes = TripManagementCmdApplication.class)
-public abstract class TripContractBase {
+public abstract class TripAggregateContractBase {
 
     @Autowired
     private WebApplicationContext webApplicationContext;

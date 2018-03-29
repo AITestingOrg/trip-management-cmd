@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class TripDtoTest {
+public class TripAggregateDtoTest {
     private final String from = "from";
     private final String to = "to";
     private final UUID userId = UUID.randomUUID();
