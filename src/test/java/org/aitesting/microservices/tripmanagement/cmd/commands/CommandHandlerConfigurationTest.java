@@ -1,5 +1,7 @@
 package org.aitesting.microservices.tripmanagement.cmd.commands;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.Date;
 import java.util.UUID;
 import org.aitesting.microservices.tripmanagement.cmd.domain.aggregates.TripAggregate;
@@ -26,8 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
-
-import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
 @Profile("test")
@@ -58,9 +58,9 @@ public class CommandHandlerConfigurationTest {
             Mockito.when(restTemplate.exchange(
                     Matchers.any(String.class),
                     Matchers.same(HttpMethod.POST),
-                    Matchers.<HttpEntity<?>> any(),
-                    Matchers.<Class<TripInvoice>> any(),
-                    Matchers.<Class<CalculationDto>> any()))
+                    Matchers.<HttpEntity<?>>any(),
+                    Matchers.<Class<TripInvoice>>any(),
+                    Matchers.<Class<CalculationDto>>any()))
                     .thenReturn(response);
             return restTemplate;
         }
@@ -85,17 +85,20 @@ public class CommandHandlerConfigurationTest {
         String newToAddr = "New Too!";
         UUID newUserId = UUID.randomUUID();
         CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress);
-        UpdateTripCommand updateCommand = new UpdateTripCommand(createCommand.getId(), new TripDto(newFromAddr, newToAddr, newUserId));
+        UpdateTripCommand updateCommand = new UpdateTripCommand(createCommand.getId(),
+                new TripDto(newFromAddr, newToAddr, newUserId));
         fixture.givenCommands(createCommand)
                 .when(updateCommand)
-                .expectEvents(new TripUpdatedEvent(createCommand.getId(), createCommand.getUserId(), newFromAddr, newToAddr, null));
+                .expectEvents(new TripUpdatedEvent(createCommand.getId(), createCommand.getUserId(),
+                        newFromAddr, newToAddr, null));
     }
 
     @Test
     public void estimateTrip() {
         TripInvoice tripInvoice = new TripInvoice(fromAddress, toAddress, 10, 5, 30, new Date());
         CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress);
-        EstimateTripCommand updateCommand = new EstimateTripCommand(createCommand.getId(), new TripDto(fromAddress, toAddress, userId, tripInvoice));
+        EstimateTripCommand updateCommand = new EstimateTripCommand(createCommand.getId(),
+                new TripDto(fromAddress, toAddress, userId, tripInvoice));
         fixture.givenCommands(createCommand)
                 .when(updateCommand)
                 .expectEvents(new TripEstimatedEvent(createCommand.getId(), updateCommand.getInvoice()));

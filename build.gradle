@@ -74,7 +74,7 @@ dependencyManagement {
 
 contracts {
 	baseClassMappings {
-		baseClassMapping(".*tripmanagement.*", "org.aitesting.microservices.tripmanagement.cmd.provider.TripContractBase")
+		baseClassMapping(".*tripmanagement.*", "org.aitesting.microservices.tripmanagement.cmd.provider.TripAggregateContractBase")
 	}
 }
 
