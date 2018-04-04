@@ -1,31 +1,29 @@
 language: java
 jdk:
 - oraclejdk8
-
 sudo: required
-
 services:
 - mongodb
 - rabbitmq
-
 env:
   global:
-  - secure: hU8Dg0NDdKdj1Gmm/dovrWHL21oj14kdROTat5NHWmxpmUqGsQi8L5uXvjHPGClVAf3XAQ15yGBr92xZqTb+SrvCtFTjJ8uIUtjcFj3ci+hm39NspeeB5TMS9VaaSowcVLmnwYg5jQbx1yVRVTps+xB5K9344aMFSn1Bu0TteZrBQRJPZoZVE+eH0t7S1AQXlLD32qWr7GutKOy6l/WO11y0fquztU25OpSNIUdCH15Lsi3nxwbu4tmcXIGtoQF931ZnMN8CFVgQpHYl8wLOEUknvHdpmlb3nwOySYnuKbCgz0E4zkJ5NPklxzFfMKCyv7pzadsud5PUl0n8p+EzFNdavEbMiJQg5byZ2f8NRfAl844SAOhUl3KAn4DnUz0iZTKqbur+/J2jDFWoEqGJ/3D6GJbjAdx3kCgTNMaMa/2gYwyrrD+3fLUNZue3SgSeyfqsUhf/k9ExBBNmWIaGf6UNt2OccvjUtQZDdL7NgBLW/ILt1pfZETVcCL13IC8/WF4CcpZC2V9qb9lx/dXFsSFXbKr7wBhoAC0CQOoxr047A8WE06zRrPaAaA1+iTeK/opQ8+mrs1bL1IS/2r+BktQvm06ohvdtQeOjcVJBl4UClotrTs7D+AQjQs6OH8Cm6SLy6yosrkOhweRcsOBWFlhS1JPGSkBUGb8kdGpesSQ=
-  - secure: YfuYxnTFYP087HkFc5h4J4Vi2Wq32+nKwlORVcwjbB2K0+AJSfmjqlNfmSI/7lLsBpv8Zt9yeJLnKGCvPdefUnO5tsePspdFqed3xuJETzyh198rXUezBr353lCzxAlmZCBVqmU68r2i8TeIdxld5jpCK5xyX6OM5v57Q+IFtj4czVrsLVIZ+TIRg1QF2oPcQ3Vja1tDJqpsmMVcZSpQbs6prtBsFPxJzMPiFVwqgeZAGucCD9klUjtCUCKr1yO1O4YeRp/MZ56SAh8RMEFMLUMcNe03Mxm3Dv5G9Oo7KUDy+yaYAI5x+wBKDnp7qYJGtnYHRevh+pdBlSMuKYVR3aaRAbRdtA+o1dnnjYZAylFfUuAvrMA1k6F6rG1rMcKwEiMVlTS4IU8vsOmF07OC8Ol9zKFtTXeqsR61KljRekhW8n8RkTHFU7DkU1l4h0bRw/UUtesV9GE8MqtGH7JQ1fB/RmqPFvvM9Fy7l55FMaYprbGETYtz5zq03iw2zjbKKCIWYm80rSyQIeUha9wdRMT1DJn5IYNL1CvXOfvoNCdADZ+WuvzeyaX8pR1TfJKHRYFtf9Dg6g2M07G9NNaBLW6qSu49Qcaqu5/fn+NWuz7uziZCVlzdNfGr5Qlr3VHSt6b8kuZVPzcDKsbW9YR4f2+C8sZ1/z2WX89Txy0d5Tk=
-  - secure: sI+vw0MKOvdk9oLveBI7ho6Y6kXTZHd64+OndiTawQRwMisdVw7IaVCaS6UmFMWRtUQ7Qds1AClYctn9w7Z7E/80dp4OnEGRuvKgbgWkvMpxv9FReiHDqzxDuo1OELM7ePqtENU+Lonrz/fm9AEi3TWLYItNdpwvksOBouwgeZNDp0Ji2TTNwAXOrfC/k5Pbr1raqwnlDONzfeW7PFt9qNMd0NqKeMYXCStC8we0fiMiuK6DOhJ2bdjcWEIV9NEi1/lTUzwPgHiH+iy6O0tBMUtVywOlOoLGyneA+yEGPIDcrrs9sVzaM7r1UmU46mxeQ4RHlwb8uVfjS+oB0AcDL1LucPrS1kXeKms+4Q3RrbzHufy6eL7iJiwqW4Z9pS2xKCsc9I2Pzm4qwXYs0lF5Mc/yT8rBQiNeMynzxs13bEbP7tYpGjh7IPJmS/WeIeY+xEgltGIDcLvwVlwceIvStMj1QoXX0VWxSfeHuT/G/pEfmqBeCK2FKj+7BEr0XLOsH3uAwdV66sCdQUhfPzKftPA0/VUQ4OJoygKNv3Mtm5gKUEcTyiAvk8tYQi8cEBbww6fqhgnrMR6/FtsPsCodkVzmBQMywyMimggnZNcF/C57+xDx0Yvy9zG04RC3TvBdxGvVuN73juK+VhY3vIxhgZcHxxYqlYl9h0frvt7IveY=
-
+  - secure: jou7ny2one25PGLWI68Ll4IUE8ZwsT9qDaKa3y0ueyjWsO4t2XDwSwYK+QcV+YsccOHZhzJKWernm/JEAJp/382zzigPwn8zg6hVOwTX3voePsVNdM9pp6dUtWPcXrXcQBAPDVeBkNytBu0lN5ZfENb5xUGm/ZyA4Sn6Re9BYFwdjzpbLYPIYsEDVOO4n00lenMmND2uFb8YY2nmzUQWHkHDd9tFp6lTuFNvy446koY7+sja3rpHd+2YlhxAwfIfbEI5jOY2jHg3yOZ2MTQ2iOIpbZ+AKrnoQ85wu9+yqbLKea9HhEYBbTPootiZHcHJ+sLCcRTpOhNcTYkiuHmoD+cBYAGnzFSunHesU742c/CcK/ci9JyWf7p0i3tX/PjSlAgYDo3oAE4extyGs0MROqFf0Cet80jfug50xdxt3v2OZZZgqKL9wddbXs+mXwToQ2r8DRCCYvVmYyCpHKvwyOf0CJi/UYxv25y8cCzcYUQD3RbMExt69uIFOhLW6MZ0f5DpxF+NRYHmtisZ1nDWewkN0UKE+qml/9eUT28lGoO89TIiTXMX+KHrAu1jJev6NuqbmVA72/EesZC9s7LOokU1Bbh3RHYpMEoVXWUsiqcThwqdgbCItgYHN5pceT1mJMQwX8W1zvIt6hniGAtd4/z/07wM7gx8oTqh9Szmfks=
+  - secure: oV1sUB6tQoLcML+c7b6Jv+alZXTUv1Ex3nTf2ofXFp6J2bbMuUBk4dVKEZOzlNCXW9kpeM3+zuD577ukS/e8qyGXlrdbWqh4SJcCuELuUuuzcACdGl/1En+rUkX6Dbi40LgHOToQTlit3OYM5TMB1S4VNiS7lQdYJE8ygTO29JfX4/sJjdzQow+JM8EVdftt3xqPsgPF2BB1SPNzjrM9o0ToEleOxi8RH7WQdj5nN7UurbV6dxZh9xyASNK1LyA+1TnrmeqNlTHdL2clK9ozHorgCdHw1xMcsiFCQLHauW3gVK8viQadCVwDLTfKCH4cUuXkHo229xfhssV3yZjyLO9spyeIK5A+SKpjFg/mLFzMuueqwcLZpXhEkbt/4f9hsZW833w09BrMI4B4Mo8Ien83+lMBGpAA9rQbD6DHsBDT0Gkvh5EMXkWVRn3FqVme2eb31DSUTFJhAX+EgaZPOKwDzP7Dy2lZeBq0/IIr+aZx8ct32JtXM+/eusJfEQfUJJ/ErjHnU0E8ij3yqvF5P9wKAmVj1WPUxhiDPT4vBvjOvE7+3QRvyq2si1DsO81vwJ+XxPrMfx5L9YBaTh+vLFnE4JQSODSpodsXwbwMLpya6i3vbYR7mC7wxy5WCu/kT0Hxba1ZOC0FOb2nuqgZC+jpP8XL7TDwODW03ENBJF4=
 before_install:
-  - echo "Testing Docker Hub credentials"
-  - docker -v
-  - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
-  - echo "Docker Hub credentials are working"
-
+- echo "Testing Docker Hub credentials"
+- docker -v
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- echo "Docker Hub credentials are working"
 after_success:
-  - export ACTUAL_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
-  - if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub"; fi
-  - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
-  - export REPO=aista/trip-management-cmd
-  - export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest";else echo ""; fi`
-  - docker build -f Dockerfile -t $REPO:$TAG .
-  - docker push $REPO
+- export ACTUAL_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
+  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+- echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST)
+  Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
+- if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub";
+  fi
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- export REPO=aista/trip-management-cmd
+- export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest";else echo "";
+  fi`
+- docker build -f Dockerfile -t $REPO:$TAG .
+- docker push $REPO
