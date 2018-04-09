@@ -1,16 +1,14 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.models;
 
-import java.util.Date;
-
 public class CalculationDto {
     private String origin;
     private String destination;
-    private Date departureTime;
+    private long departureTime;
 
     public CalculationDto() {
     }
 
-    public CalculationDto(String origin, String destination, Date departureTime) {
+    public CalculationDto(String origin, String destination, long departureTime) {
         this.origin = origin;
         this.destination = destination;
         this.departureTime = departureTime;
@@ -24,7 +22,13 @@ public class CalculationDto {
         return destination;
     }
 
-    public Date getDeparture_time() {
+    public long getDeparture_time() {
         return departureTime;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("origin: %s\ndestination: %s\ndepartureTime: %s\n",
+                origin, destination, departureTime);
     }
 }

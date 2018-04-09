@@ -28,5 +28,26 @@ services:
     image: springcloud/eureka
     ports:
       - "8761:8761"
+
+  gmapsadapter:
+    image: aista/gmaps-adapter
+    environment:
+      - EUREKA_SERVER=discovery-service
+    ports:
+      - '8080'
+    depends_on:
+      - discovery-service
+
+  calculationservice:
+    image: aista/calculation-service
+    environment:
+      - EUREKA_SERVER=discovery-service
+    ports:
+      - '8080'
+    depends_on:
+      - gmapsadapter
+      - discovery-service
+
+
 volumes:
   mongo:

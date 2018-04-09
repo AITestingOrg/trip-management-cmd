@@ -60,7 +60,7 @@ public class TripAggregate {
     }
 
     /*
-    Comand Handlers
+    Command Handlers
      */
 
     @CommandHandler

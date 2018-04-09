@@ -14,12 +14,6 @@ import org.springframework.web.client.RestTemplate;
 public class TripEventStoreConfiguration
         extends AmqpEventPublisherConfiguration<TripAggregate, TripCommandHandler> {
 
-    @LoadBalanced
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     public TripEventStoreConfiguration() {
         super(TripAggregate.class);
     }
