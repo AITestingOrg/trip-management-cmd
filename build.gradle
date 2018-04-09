@@ -52,6 +52,7 @@ dependencies {
 	compile("io.springfox:springfox-swagger-ui:${springfoxVersion}")
 
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	compile('org.springframework.cloud:spring-cloud-starter-ribbon')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-amqp')
