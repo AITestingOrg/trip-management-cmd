@@ -69,7 +69,7 @@ public class TripController {
         logger.trace(String.format("Dispatched CompleteTripCommand %s", id));
     }
 
-    @PutMapping("trip/{id}")
+    @PutMapping("trip/update/{id}")
     public void updateTrip(@PathVariable("id") UUID id, @RequestBody TripDto trip) throws Exception {
         logger.info(String.format("Request to update trip %s", id));
         // todo: move this logic to a service
@@ -81,7 +81,7 @@ public class TripController {
             commandGateway.send(new EstimateTripCommand(id, trip));
             logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
         } catch (Exception e) {
-            throw new Exception("Opps, something went wrong. Please try again later.");
+            throw new Exception("Oops, something went wrong. Please try again later.");
         }
     }
 }
