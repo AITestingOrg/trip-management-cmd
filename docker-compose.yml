@@ -23,7 +23,6 @@ services:
       - rabbitmq
       - mongo
       - discovery-service
-  trip-management-cmd:
   tripmanagementcmd:
     build: ./
     environment:

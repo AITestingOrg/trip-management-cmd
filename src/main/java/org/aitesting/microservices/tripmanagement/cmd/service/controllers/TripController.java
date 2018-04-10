@@ -35,8 +35,9 @@ public class TripController {
                 trip.getOriginAddress(),
                 trip.getDestinationAddress(),
                 trip.getUserId()));
+        TripInvoice invoice = calculationService.getInvoice(trip);
         CreateTripCommand createTripCommand = new CreateTripCommand(
-                trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
+                trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress(), invoice);
         commandGateway.send(createTripCommand);
         logger.trace(String.format("Dispatched CreateTripCommand %s", createTripCommand.getId()));
         Map<String, Object> json = new HashMap<>();
@@ -78,7 +79,6 @@ public class TripController {
             TripInvoice invoiceEstimate = calculationService.getInvoice(trip);
             trip.setEstimate(invoiceEstimate);
             commandGateway.send(new UpdateTripCommand(id, trip));
-            commandGateway.send(new EstimateTripCommand(id, trip));
             logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
         } catch (Exception e) {
             throw new Exception("Oops, something went wrong. Please try again later.");

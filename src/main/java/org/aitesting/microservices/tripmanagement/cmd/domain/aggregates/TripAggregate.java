@@ -30,7 +30,7 @@ public class TripAggregate {
     public TripAggregate(CreateTripCommand createTripCommand) {
         logger.trace(String.format("Dispatching TripCreatedEvent %s", createTripCommand.getId()));
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
-                createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress()));
+                createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress(), createTripCommand.getTripInvoice()));
     }
 
     public TripAggregate(){}
@@ -91,13 +91,6 @@ public class TripAggregate {
                 updateTripCommand.getTrip().getTripEstimate()));
     }
 
-    @CommandHandler
-    public void on(EstimateTripCommand estimateTripCommand) {
-        logger.trace("Estimate Trip Command {}", estimateTripCommand.getId());
-        apply(new TripEstimatedEvent(estimateTripCommand.getId(), estimateTripCommand.getInvoice()));
-        logger.info("Estimate Trip Command Success {}", estimateTripCommand.getId());
-    }
-
     /*
     Event Sourcing Handlers
      */
@@ -109,14 +102,16 @@ public class TripAggregate {
         originAddress = tripCreatedEvent.getOriginAddress();
         destinationAddress = tripCreatedEvent.getDestinationAddress();
         userId = tripCreatedEvent.getUserId();
+        estimateInvoice = tripCreatedEvent.getTripInvoice();
         status = TripStatus.CREATED;
     }
 
     @EventSourcingHandler
-    public void on(TripUpdatedEvent tripCreatedEvent) {
-        logger.trace(String.format("Sourcing TripUpdated %s", tripCreatedEvent.getId()));
-        originAddress = tripCreatedEvent.getOriginAddress();
-        destinationAddress = tripCreatedEvent.getDestinationAddress();
+    public void on(TripUpdatedEvent tripUpdatedEvent) {
+        logger.trace(String.format("Sourcing TripUpdated %s", tripUpdatedEvent.getId()));
+        originAddress = tripUpdatedEvent.getOriginAddress();
+        destinationAddress = tripUpdatedEvent.getDestinationAddress();
+        estimateInvoice = tripUpdatedEvent.getTripInvoice();
     }
 
     @EventSourcingHandler
@@ -137,13 +132,4 @@ public class TripAggregate {
         status = TripStatus.COMPLETED;
     }
 
-    @EventSourcingHandler
-    public void on(TripEstimatedEvent tripEstimatedEvent) {
-        logger.trace(String.format("Sourcing TripEstimated %s", tripEstimatedEvent.getId()));
-        if (tripEstimatedEvent.getTripInvoice() != null) {
-            estimateInvoice = tripEstimatedEvent.getTripInvoice();
-        } else {
-            logger.warn(String.format("No invoice found %s", tripEstimatedEvent.getId()));
-        }
-    }
 }

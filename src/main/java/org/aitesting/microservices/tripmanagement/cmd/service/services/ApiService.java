@@ -87,7 +87,7 @@ public abstract class ApiService<T, K> {
             String.class);
         logger.info("Got a reply back");
 
-        Gson gson = new GsonBuilder().setDateFormat("MMM dd yyyy").create();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         return gson.fromJson(exchange.getBody(), type);
     }
 

@@ -38,6 +38,13 @@ public class CommandHandlerConfigurationTest {
     private final String fromAddress = "2250 north commerce parkway weston fl";
     private final String toAddress = "Miami International Airport";
     private final UUID userId = UUID.randomUUID();
+    private final TripInvoice invoice = new TripInvoice(
+            "1223 Test",
+            "321 Test",
+            4,
+            10,
+            30,
+            new Date());
 
     @Configuration
     static class TestConfig {
@@ -73,10 +80,10 @@ public class CommandHandlerConfigurationTest {
 
     @Test
     public void createTrip() {
-        CreateTripCommand command = new CreateTripCommand(userId, fromAddress, toAddress);
+        CreateTripCommand command = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         fixture.given()
                 .when(command)
-                .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), fromAddress, toAddress));
+                .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), fromAddress, toAddress, invoice));
     }
 
     @Test
@@ -84,7 +91,7 @@ public class CommandHandlerConfigurationTest {
         String newFromAddr = "New!";
         String newToAddr = "New Too!";
         UUID newUserId = UUID.randomUUID();
-        CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress);
+        CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         UpdateTripCommand updateCommand = new UpdateTripCommand(createCommand.getId(),
                 new TripDto(newFromAddr, newToAddr, newUserId));
         fixture.givenCommands(createCommand)
@@ -94,19 +101,8 @@ public class CommandHandlerConfigurationTest {
     }
 
     @Test
-    public void estimateTrip() {
-        TripInvoice tripInvoice = new TripInvoice(fromAddress, toAddress, 10, 5, 30, new Date());
-        CreateTripCommand createCommand = new CreateTripCommand(userId, fromAddress, toAddress);
-        EstimateTripCommand updateCommand = new EstimateTripCommand(createCommand.getId(),
-                new TripDto(fromAddress, toAddress, userId, tripInvoice));
-        fixture.givenCommands(createCommand)
-                .when(updateCommand)
-                .expectEvents(new TripEstimatedEvent(createCommand.getId(), updateCommand.getInvoice()));
-    }
-
-    @Test
     public void cancelTrip() {
-        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress);
+        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         CancelTripCommand cancelTripCommand = new CancelTripCommand(createTripCommand.getId());
 
         fixture.givenCommands(createTripCommand)
@@ -125,7 +121,7 @@ public class CommandHandlerConfigurationTest {
 
     @Test
     public void startTrip() {
-        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress);
+        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         StartTripCommand startTripCommand = new StartTripCommand(createTripCommand.getId());
 
         fixture.givenCommands(createTripCommand)
@@ -144,7 +140,7 @@ public class CommandHandlerConfigurationTest {
 
     @Test
     public void completeTrip() {
-        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress);
+        CreateTripCommand createTripCommand = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         CompleteTripCommand completeTripCommand = new CompleteTripCommand(createTripCommand.getId());
 
         fixture.givenCommands(createTripCommand)
