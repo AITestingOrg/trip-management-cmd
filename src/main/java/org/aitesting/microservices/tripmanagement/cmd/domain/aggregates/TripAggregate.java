@@ -30,7 +30,8 @@ public class TripAggregate {
     public TripAggregate(CreateTripCommand createTripCommand) {
         logger.trace(String.format("Dispatching TripCreatedEvent %s", createTripCommand.getId()));
         apply(new TripCreatedEvent(createTripCommand.getId(), createTripCommand.getUserId(),
-                createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress(), createTripCommand.getTripInvoice()));
+                createTripCommand.getOriginAddress(), createTripCommand.getDestinationAddress(),
+                createTripCommand.getTripInvoice()));
     }
 
     public TripAggregate(){}

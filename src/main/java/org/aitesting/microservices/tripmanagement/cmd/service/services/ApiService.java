@@ -1,10 +1,10 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.netflix.discovery.DiscoveryClient;
+import java.util.List;
+
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
 import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.slf4j.Logger;

@@ -1,10 +1,10 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.text.DateFormat;
 import java.util.Date;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.CalculationDto;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;

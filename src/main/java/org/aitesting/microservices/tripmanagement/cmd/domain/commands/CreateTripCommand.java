@@ -37,7 +37,11 @@ public class CreateTripCommand {
         return destinationAddress;
     }
 
-    public TripInvoice getTripInvoice() { return tripInvoice; }
+    public TripInvoice getTripInvoice() {
+        return tripInvoice;
+    }
 
-    public void setTripInvoice(TripInvoice tripInvoice) { this.tripInvoice = tripInvoice; }
+    public void setTripInvoice(TripInvoice tripInvoice) {
+        this.tripInvoice = tripInvoice;
+    }
 }
