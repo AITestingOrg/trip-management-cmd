@@ -2,21 +2,13 @@ package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.netflix.discovery.DiscoveryClient;
 import java.util.List;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
-import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -34,12 +26,6 @@ public abstract class ApiService<T, K> {
     @Value("${aist.use_ssl}")
     protected boolean useSsl;
 
-    @LoadBalanced
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -48,7 +34,6 @@ public abstract class ApiService<T, K> {
     }
 
     public T getOne(String path) {
-        restTemplate = restTemplate();
         String uri = buildUri(service.name(), path);
         logger.info("Sending a GET request to " + uri);
         ResponseEntity<T> exchange = this.restTemplate.exchange(
@@ -60,7 +45,6 @@ public abstract class ApiService<T, K> {
     }
 
     public List<T> getMany(String path) {
-        restTemplate = restTemplate();
         String uri = buildUri(service.name(), path);
         logger.info("Sending a GET request to " + uri);
         ResponseEntity<List<T>> exchange = this.restTemplate.exchange(
@@ -72,7 +56,6 @@ public abstract class ApiService<T, K> {
     }
 
     public T create(String path, K obj) {
-        restTemplate = restTemplate();
         String uri = buildUri(service.name(), path);
         logger.info("Sending a POST request to " + uri);
         logger.info("obj to send: " + obj);
@@ -98,7 +81,6 @@ public abstract class ApiService<T, K> {
     }
 
     public void delete(String path) {
-        restTemplate = restTemplate();
         String uri = buildUri(service.name(), path);
         logger.info("Sending a PUT request to " + uri);
         this.restTemplate.delete(uri);

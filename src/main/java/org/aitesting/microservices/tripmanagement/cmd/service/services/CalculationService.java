@@ -1,14 +1,10 @@
 package org.aitesting.microservices.tripmanagement.cmd.service.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.text.DateFormat;
 import java.util.Date;
 
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.CalculationDto;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.Services;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
-import org.aitesting.microservices.tripmanagement.cmd.service.controllers.TripController;
 import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +22,12 @@ public class CalculationService extends ApiService<TripInvoice, CalculationDto> 
 
     public TripInvoice getInvoice(TripDto tripDto) {
         logger.info("Request to calculationservice for invoice");
-
-        return create("api/v1/cost", new CalculationDto(
+        TripInvoice reply = create("api/v1/cost", new CalculationDto(
                 tripDto.getOriginAddress(),
                 tripDto.getDestinationAddress(),
                 new Date().getTime()));
+        logger.info(String.format("Trip invoice received:\nCost: %s\nLastUpdated %s",
+                reply.getCost(), reply.getLastUpdated()));
+        return reply;
     }
 }

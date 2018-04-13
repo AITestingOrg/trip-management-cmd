@@ -12,9 +12,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-  trip-management-query:
+  tripmanagementquery:
     image: aista/trip-management-query
-    container_name: 'trip-management-query'
     environment:
       - RABBIT_HOST=rabbitmq
       - MONGO_HOST=mongo
@@ -24,6 +23,7 @@ services:
       - rabbitmq
       - mongo
       - discovery-service
+
   discovery-service:
     image: springcloud/eureka
     ports:

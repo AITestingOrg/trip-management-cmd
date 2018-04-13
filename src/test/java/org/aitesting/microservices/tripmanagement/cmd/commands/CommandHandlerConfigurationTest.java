@@ -83,7 +83,8 @@ public class CommandHandlerConfigurationTest {
         CreateTripCommand command = new CreateTripCommand(userId, fromAddress, toAddress, invoice);
         fixture.given()
                 .when(command)
-                .expectEvents(new TripCreatedEvent(command.getId(), command.getUserId(), fromAddress, toAddress, invoice));
+                .expectEvents(new TripCreatedEvent(
+                        command.getId(), command.getUserId(), fromAddress, toAddress, invoice));
     }
 
     @Test
