@@ -30,13 +30,6 @@ public class TripDto {
         this.userId = userId;
     }
 
-    public TripDto(String originAddress, String destinationAddress, UUID userId, TripInvoice tripEstimate) {
-        this.originAddress = originAddress;
-        this.destinationAddress = destinationAddress;
-        this.userId = userId;
-        this.tripEstimate = tripEstimate;
-    }
-
     public String getOriginAddress() {
         return originAddress;
     }

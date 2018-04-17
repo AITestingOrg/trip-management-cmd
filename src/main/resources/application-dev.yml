@@ -1,6 +1,6 @@
 spring:
   application:
-    name: trip-management-cmd
+    name: tripmanagementcmd
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
 
