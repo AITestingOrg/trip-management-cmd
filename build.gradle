@@ -40,7 +40,7 @@ ext {
 dependencies {
 	// TODO local files dependencies while things are not up.
 	compile files('libs/library--axon-configuration-0.0.1.jar')
-	compile files('libs/trip-management-common-1.0-SNAPSHOT.jar')
+	compile files('libs/trip-management-common-1.0.jar')
 
 	compile("org.axonframework:axon-core:${axonVersion}")
 	compile("org.axonframework:axon-mongo:${axonVersion}")
@@ -52,6 +52,7 @@ dependencies {
 	compile("io.springfox:springfox-swagger-ui:${springfoxVersion}")
 
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	compile('org.springframework.cloud:spring-cloud-starter-ribbon')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-amqp')
@@ -60,6 +61,7 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 
+	testCompile 'org.mockito:mockito-core:2.8.9'
 	testCompile 'org.codehaus.groovy:groovy-all:2.4.6'
 	testCompile "org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}"
 	testCompile "org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}"
@@ -74,7 +76,7 @@ dependencyManagement {
 
 contracts {
 	baseClassMappings {
-		baseClassMapping(".*tripmanagement.*", "org.aitesting.microservices.tripmanagement.cmd.provider.TripContractBase")
+		baseClassMapping(".*tripmanagement.*", "org.aitesting.microservices.tripmanagement.cmd.provider.TripAggregateContractBase")
 	}
 }
 
@@ -103,6 +105,12 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: "${project.buildDir}/classes/main",
+					exclude: ['**/service/services/ApiService*'])
+		})
+	}
 	violationRules {
 		rule {
 			limit {

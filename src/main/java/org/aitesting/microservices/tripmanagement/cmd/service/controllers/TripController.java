@@ -5,11 +5,10 @@ import java.util.Map;
 import java.util.UUID;
 import javax.validation.Valid;
 
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CancelTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CompleteTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.CreateTripCommand;
-import org.aitesting.microservices.tripmanagement.cmd.domain.commands.StartTripCommand;
+import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
+import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
+import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +26,18 @@ public class TripController {
     @Autowired
     private CommandGateway commandGateway;
 
+    @Autowired
+    CalculationService calculationService;
+
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
         logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s",
-                trip.getOriginAddress(), trip.getDestinationAddress(), trip.getUserId()));
+                trip.getOriginAddress(),
+                trip.getDestinationAddress(),
+                trip.getUserId()));
+        TripInvoice invoice = calculationService.getInvoice(trip);
         CreateTripCommand createTripCommand = new CreateTripCommand(
-                trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress());
+                trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress(), invoice);
         commandGateway.send(createTripCommand);
         logger.trace(String.format("Dispatched CreateTripCommand %s", createTripCommand.getId()));
         Map<String, Object> json = new HashMap<>();
@@ -63,5 +68,20 @@ public class TripController {
         logger.info(String.format("Request to complete trip %s", id));
         commandGateway.send(new CompleteTripCommand(id));
         logger.trace(String.format("Dispatched CompleteTripCommand %s", id));
+    }
+
+    @PutMapping("trip/update/{id}")
+    public void updateTrip(@PathVariable("id") UUID id, @RequestBody TripDto trip) throws Exception {
+        logger.info(String.format("Request to update trip %s", id));
+        // todo: move this logic to a service
+        try {
+            // this is done outside of the aggregate to avoid blocking it.
+            TripInvoice invoiceEstimate = calculationService.getInvoice(trip);
+            trip.setEstimate(invoiceEstimate);
+            commandGateway.send(new UpdateTripCommand(id, trip));
+            logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
+        } catch (Exception e) {
+            throw new Exception("Oops, something went wrong. Please try again later.");
+        }
     }
 }

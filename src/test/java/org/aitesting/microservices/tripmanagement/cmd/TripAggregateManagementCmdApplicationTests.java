@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @Profile("test")
 @SpringBootTest
-public class TripManagementCmdApplicationTests {
+public class TripAggregateManagementCmdApplicationTests {
 
     @Test
     public void contextLoads() {

@@ -12,9 +12,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-  trip-management-query:
+  tripmanagementquery:
     image: aista/trip-management-query
-    container_name: 'trip-management-query'
     environment:
       - RABBIT_HOST=rabbitmq
       - MONGO_HOST=mongo
@@ -24,24 +23,31 @@ services:
       - rabbitmq
       - mongo
       - discovery-service
-  trip-management-cmd:
-    build: ./
-    container_name: 'trip-management-cmd'
-    environment:
-      - RABBIT_HOST=rabbitmq
-      - MONGO_HOST=mongo
-    ports:
-      - '8080'
-    depends_on:
-      - rabbitmq
-      - mongo
-      - trip-management-query
-      - discovery-service
+
   discovery-service:
     image: springcloud/eureka
     ports:
       - "8761:8761"
-    container_name: eureka-server
+
+  gmapsadapter:
+    image: aista/gmaps-adapter
+    environment:
+      - EUREKA_SERVER=discovery-service
+    ports:
+      - '8080'
+    depends_on:
+      - discovery-service
+
+  calculationservice:
+    image: aista/calculation-service
+    environment:
+      - EUREKA_SERVER=discovery-service
+    ports:
+      - '8080'
+    depends_on:
+      - gmapsadapter
+      - discovery-service
+
 
 volumes:
   mongo:
