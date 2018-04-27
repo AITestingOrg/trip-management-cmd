@@ -7,11 +7,13 @@ services:
       - '27017:27017'
     volumes:
       - 'mongo:/data/db'
+
   rabbitmq:
     image: rabbitmq:management
     ports:
       - "5672:5672"
       - "15672:15672"
+
   tripmanagementquery:
     image: aista/trip-management-query
     environment:
@@ -23,6 +25,7 @@ services:
       - rabbitmq
       - mongo
       - discovery-service
+
   tripmanagementcmd:
     build: ./
     environment:
@@ -36,6 +39,8 @@ services:
       - tripmanagementquery
       - discovery-service
       - calculationservice
+      - driverquery
+      - drivercmd
 
   discovery-service:
     image: springcloud/eureka
@@ -61,6 +66,30 @@ services:
     depends_on:
       - gmapsadapter
       - discovery-service
+
+  driverquery:
+    build: aista/driver-query
+    container_name: 'driverquery'
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - MONGO_HOST=mongo
+    ports:
+      - "8080"
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  drivercmd:
+    build: aista/driver-cmd
+    container_name: 'drivercmd'
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - MONGO_HOST=mongo
+    ports:
+      - "8080"
+    depends_on:
+      - rabbitmq
+      - mongo
 
 volumes:
   mongo:

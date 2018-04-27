@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
+import org.aitesting.microservices.tripmanagement.cmd.service.services.DriverService;
 import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
@@ -28,6 +29,9 @@ public class TripController {
 
     @Autowired
     CalculationService calculationService;
+
+    @Autowired
+    DriverService driverService;
 
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
@@ -61,6 +65,14 @@ public class TripController {
         logger.info(String.format("Request to start trip %s", id));
         commandGateway.send(new StartTripCommand(id));
         logger.trace(String.format("Dispatched StartTripCommand %s", id));
+    }
+
+    @PutMapping("trip/accept/{id}")
+    public void acceptTrip(@PathVariable("id") UUID id) {
+        logger.info(String.format("Request to accept trip %s", id));
+        UUID driverId = driverService.getAvailableDriver().getId();
+        commandGateway.send(new AcceptTripCommand(id, driverId));
+        logger.trace(String.format("Dispatched AcceptTripCommand %s", id));
     }
 
     @PutMapping("trip/completed/{id}")

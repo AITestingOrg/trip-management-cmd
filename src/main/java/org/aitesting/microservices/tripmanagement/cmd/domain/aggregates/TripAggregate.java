@@ -25,6 +25,7 @@ public class TripAggregate {
     private UUID userId;
     private TripStatus status;
     private TripInvoice estimateInvoice;
+    private UUID driverId;
 
     @CommandHandler
     public TripAggregate(CreateTripCommand createTripCommand) {
@@ -92,6 +93,12 @@ public class TripAggregate {
                 updateTripCommand.getTrip().getTripEstimate()));
     }
 
+    @CommandHandler
+    public void on(AcceptTripCommand acceptTripCommand) {
+        logger.trace(String.format("Dispatching UpdateTrip %s", acceptTripCommand.getId()));
+        apply(new TripAcceptedEvent(acceptTripCommand.getId(), acceptTripCommand.getDriverId()));
+    }
+
     /*
     Event Sourcing Handlers
      */
@@ -131,6 +138,13 @@ public class TripAggregate {
     public void on(TripCompletedEvent tripEndedEvent) {
         logger.trace(String.format("Sourcing TripCompleted %s", tripEndedEvent.getId()));
         status = TripStatus.COMPLETED;
+    }
+
+    @EventSourcingHandler
+    public void on(TripAcceptedEvent tripAcceptedEvent) {
+        logger.trace(String.format("Sourcing TripAccepted %s", tripAcceptedEvent.getId()));
+        driverId = tripAcceptedEvent.getDriverId();
+        status = TripStatus.ACCEPTED;
     }
 
 }

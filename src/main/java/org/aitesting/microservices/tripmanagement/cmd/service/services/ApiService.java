@@ -36,12 +36,13 @@ public abstract class ApiService<T, K> {
     public T getOne(String path) {
         String uri = buildUri(service.name(), path);
         logger.info("Sending a GET request to " + uri);
-        ResponseEntity<T> exchange = this.restTemplate.exchange(
+        ResponseEntity<String> exchange = this.restTemplate.exchange(
             uri,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<T>() {});
-        return exchange.getBody();
+            String.class);
+        Gson gson = new GsonBuilder().create();
+        return gson.fromJson(exchange.getBody(), type);
     }
 
     public List<T> getMany(String path) {

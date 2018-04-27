@@ -33,8 +33,8 @@ axon:
 amqp:
   events:
     host: ${RABBIT_HOST:localhost}
-    exchange-name: eventBus
-    queue-name: eventQueue
+    exchange-name: eventBusTrip
+    queue-name: eventQueueTrip
     handlers: org.aistesting.microservices.tripmanagement.cmd.domain.eventhandlers
 
 logging:
