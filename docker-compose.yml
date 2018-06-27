@@ -22,7 +22,7 @@ services:
     depends_on:
       - rabbitmq
       - mongo
-      - discovery-service
+      - discoveryservice
   tripmanagementcmd:
     build: ./
     environment:
@@ -34,10 +34,10 @@ services:
       - rabbitmq
       - mongo
       - tripmanagementquery
-      - discovery-service
+      - discoveryservice
       - calculationservice
 
-  discovery-service:
+  discoveryservice:
     image: aista/eureka
     ports:
       - "8761:8761"
@@ -46,21 +46,21 @@ services:
   gmapsadapter:
     image: aista/gmaps-adapter
     environment:
-      - EUREKA_SERVER=discovery-service
+      - EUREKA_SERVER=discoveryservice
     ports:
       - '8080'
     depends_on:
-      - discovery-service
+      - discoveryservice
 
   calculationservice:
     image: aista/calculation-service
     environment:
-      - EUREKA_SERVER=discovery-service
+      - EUREKA_SERVER=discoveryservice
     ports:
       - '8080'
     depends_on:
       - gmapsadapter
-      - discovery-service
+      - discoveryservice
 
 volumes:
   mongo:
