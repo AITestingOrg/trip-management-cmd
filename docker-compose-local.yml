@@ -7,11 +7,13 @@ services:
       - '27017:27017'
     volumes:
       - 'mongo:/data/db'
+
   rabbitmq:
     image: rabbitmq:management
     ports:
       - "5672:5672"
       - "15672:15672"
+
   tripmanagementquery:
     image: aista/trip-management-query
     environment:
@@ -48,6 +50,17 @@ services:
       - gmapsadapter
       - discoveryservice
 
+  tripmanagementcmd:
+    build: ./
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - MONGO_HOST=mongo
+    ports:
+      - "8080"
+    depends_on:
+      - rabbitmq
+      - mongo
+      - discoveryservice
 
 volumes:
   mongo:
