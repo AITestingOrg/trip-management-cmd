@@ -24,7 +24,7 @@ services:
       - mongo
       - discoveryservice
   tripmanagementcmd:
-    build: ./
+    image: aista/trip-management-cmd
     environment:
       - RABBIT_HOST=rabbitmq
       - MONGO_HOST=mongo
