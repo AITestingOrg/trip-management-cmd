@@ -12,8 +12,21 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
   tripmanagementquery:
-    image: aista/trip-management-query
+    build: ../trip-management-query
+    environment:
+      - RABBIT_HOST=rabbitmq
+      - MONGO_HOST=mongo
+    ports:
+      - "8080"
+    depends_on:
+      - rabbitmq
+      - mongo
+      - discoveryservice
+
+  tripmanagementcmd:
+    build: ./
     environment:
       - RABBIT_HOST=rabbitmq
       - MONGO_HOST=mongo
@@ -30,23 +43,26 @@ services:
       - "8761:8761"
 
   gmapsadapter:
-    image: aista/gmaps-adapter
+    build: ../gmaps-adapter/
     environment:
       - EUREKA_SERVER=discoveryservice
     ports:
       - '8080'
     depends_on:
       - discoveryservice
+      - rabbitmq
 
   calculationservice:
-    image: aista/calculation-service
+    image: aista/calculation-service:local
     environment:
+      - RABBIT_HOST=rabbitmq
       - EUREKA_SERVER=discoveryservice
     ports:
       - '8080'
     depends_on:
       - gmapsadapter
       - discoveryservice
+      - rabbitmq
 
 
 volumes:

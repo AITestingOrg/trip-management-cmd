@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.UUID;
 import javax.validation.Valid;
 
+import javafx.application.Application;
+import org.aitesting.microservices.tripmanagement.cmd.Receiver;
 import org.aitesting.microservices.tripmanagement.cmd.domain.commands.*;
 import org.aitesting.microservices.tripmanagement.cmd.domain.models.TripDto;
 import org.aitesting.microservices.tripmanagement.cmd.service.services.CalculationService;
@@ -12,6 +14,7 @@ import org.aitesting.microservices.tripmanagement.common.models.TripInvoice;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,9 @@ public class TripController {
 
     @Autowired
     CalculationService calculationService;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
@@ -75,12 +81,16 @@ public class TripController {
         logger.info(String.format("Request to update trip %s", id));
         // todo: move this logic to a service
         try {
+            logger.info("before getInvoice");
             // this is done outside of the aggregate to avoid blocking it.
             TripInvoice invoiceEstimate = calculationService.getInvoice(trip);
+            logger.info("after getInvoice");
+            //rabbitTemplate.convertAndSend("trip-calculation-queue", "Test message from trip controller trip/update/{id}");
             trip.setEstimate(invoiceEstimate);
             commandGateway.send(new UpdateTripCommand(id, trip));
             logger.trace(String.format("Dispatched UpdateTripCommand %s", id));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Oops, something went wrong. Please try again later.");
         }
     }
