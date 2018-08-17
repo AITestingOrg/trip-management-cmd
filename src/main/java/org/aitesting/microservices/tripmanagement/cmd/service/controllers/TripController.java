@@ -29,22 +29,27 @@ public class TripController {
     @Autowired
     CalculationService calculationService;
 
+    @GetMapping("trip")
+    public String getUUIDVersion() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        int version = uuid.version();
+        System.out.println("**************UUID: " + version);
+        return " " + version;
+    }
+
     @PostMapping("trip")
     public ResponseEntity<Map<String, Object>> addTrip(@Valid @RequestBody TripDto trip) {
         logger.info(String.format("Request to add trip Origin: %s, Destination: %s, UserId: %s",
-                trip.getOriginAddress(),
-                trip.getDestinationAddress(),
-                trip.getUserId()));
-        TripInvoice invoice = calculationService.getInvoice(trip);
-        CreateTripCommand createTripCommand = new CreateTripCommand(
-                trip.getUserId(), trip.getOriginAddress(), trip.getDestinationAddress(), invoice);
+                trip.getOriginAddress(), trip.getDestinationAddress(), trip.getUserId()));
+        CreateTripCommand createTripCommand = new CreateTripCommand(trip.getUserId(), trip.getOriginAddress(),
+                trip.getDestinationAddress(), null);
         commandGateway.send(createTripCommand);
         logger.trace(String.format("Dispatched CreateTripCommand %s", createTripCommand.getId()));
         Map<String, Object> json = new HashMap<>();
         json.put("id", createTripCommand.getId());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=UTF-8");
+        headers.add("Content-Type", "application/json");
 
         return (new ResponseEntity<>(json, headers, HttpStatus.CREATED));
     }

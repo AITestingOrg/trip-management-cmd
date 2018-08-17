@@ -36,7 +36,7 @@ public class CalculationServiceUnitTest {
     public void testGetInvoiceSuccess() throws Exception {
         //arrange
         TripDto tripDto = new TripDto(FROM, TO, TRIP_ID1);
-        CalculationDto calculationDto = new CalculationDto(FROM, TO, new Date().getTime());
+        CalculationDto calculationDto = new CalculationDto(FROM, TO, new Date().getTime(), USER_ID);
         TripInvoice invoice = new TripInvoice(
                 calculationDto.getOrigin(),
                 calculationDto.getDestination(),

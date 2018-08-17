@@ -1,53 +1,75 @@
-version: '3'
+version: '2.3'
 services:
 
   mongo:
     image: 'mongo:3.4.1'
+    mem_limit: 512M
     ports:
       - '27017:27017'
     volumes:
       - 'mongo:/data/db'
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3.7.3-management
+    mem_limit: 512M
     ports:
       - "5672:5672"
       - "15672:15672"
-  tripmanagementquery:
-    image: aista/trip-management-query
-    environment:
-      - RABBIT_HOST=rabbitmq
-      - MONGO_HOST=mongo
-    ports:
-      - "8080"
-    depends_on:
-      - rabbitmq
-      - mongo
-      - discovery-service
+#  tripmanagementquery:
+#    image: aista/trip-management-query
+#    mem_limit: 512M
+#    environment:
+#      - RABBIT_HOST=rabbitmq
+#      - MONGO_HOST=mongo
+#    ports:
+#      - "8080"
+#    depends_on:
+#      - rabbitmq
+#      - mongo
+#      - discoveryservice
 
-  discovery-service:
+  discoveryservice:
     image: springcloud/eureka
+    mem_limit: 512M
     ports:
       - "8761:8761"
 
   gmapsadapter:
     image: aista/gmaps-adapter
+    mem_limit: 512M
     environment:
-      - EUREKA_SERVER=discovery-service
+      - EUREKA_SERVER=discoveryservice
     ports:
       - '8080'
     depends_on:
-      - discovery-service
+      - discoveryservice
 
   calculationservice:
-    image: aista/calculation-service
+    build: C:\Users\Juan\go\src\github.com\AITestingOrg\calculation-service
+    mem_limit: 512M
     environment:
-      - EUREKA_SERVER=discovery-service
+      - EUREKA_SERVER=discoveryservice
+      - RABBIT_HOST=rabbitmq
+    command: ["go", "run", "main.go"]
     ports:
       - '8080'
     depends_on:
-      - gmapsadapter
-      - discovery-service
-
+      - discoveryservice
+      - rabbitmq
+  
+#  tripmanagementcmd:
+#    build: ./
+#    mem_limit: 512M
+#    environment:
+#      - RABBIT_HOST=rabbitmq
+#      - MONGO_HOST=mongo
+#    ports:
+#      - '8080'
+#    depends_on:
+#      - rabbitmq
+#      - mongo
+#      - tripmanagementquery
+#      - discoveryservice
+#      - calculationservice
 
 volumes:
   mongo:

@@ -25,7 +25,8 @@ public class CalculationService extends ApiService<TripInvoice, CalculationDto> 
         TripInvoice reply = create("api/v1/cost", new CalculationDto(
                 tripDto.getOriginAddress(),
                 tripDto.getDestinationAddress(),
-                new Date().getTime()));
+                new Date().getTime(),
+                tripDto.getUserId()));
         logger.info(String.format("Trip invoice received:\nCost: %s\nLastUpdated %s",
                 reply.getCost(), reply.getLastUpdated()));
         return reply;

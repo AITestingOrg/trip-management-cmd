@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: tripmanagementcmd
-  rabbitmq:
-    host: ${RABBIT_HOST:localhost}
-
-server:
-  port: ${APP_PORT:8080}

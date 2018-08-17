@@ -1,17 +1,21 @@
 package org.aitesting.microservices.tripmanagement.cmd.domain.models;
 
+import java.util.UUID;
+
 public class CalculationDto {
     private String origin;
     private String destination;
+    private UUID userId;
     private long departureTime;
 
     public CalculationDto() {
     }
 
-    public CalculationDto(String origin, String destination, long departureTime) {
+    public CalculationDto(String origin, String destination, long departureTime, UUID userId) {
         this.origin = origin;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.userId = userId;
     }
 
     public String getOrigin() {
@@ -24,6 +28,10 @@ public class CalculationDto {
 
     public long getDeparture_time() {
         return departureTime;
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 
     @Override
