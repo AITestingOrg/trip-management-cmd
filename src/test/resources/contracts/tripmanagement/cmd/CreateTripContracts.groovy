@@ -4,78 +4,23 @@ import org.springframework.cloud.contract.spec.Contract
 
 [
     Contract.make {
-        description("When a POST request to api/tripmanagement should return 200")
-        request {
-            method 'POST'
-            url '/api/v1/trip'
-            headers{
-                contentType(applicationJson())
-            }
-            body(
-                "originAddress":"Smoke on the Water, 1630 Bell Tower Ln, Weston, FL 33326",
-                "destinationAddress":"Parking Lot, Hialeah, FL 33014",
-                "userId":"123e4567-e89b-12d3-a456-426655440000"
-            )
-        }
-        response {
-            status 201
-            body(
-                    "id": regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")
-            )
-            headers {
-                contentType(applicationJson())
-            }
-        }
-    },
-    Contract.make {
-        description("When a POST request to api/tri missing origin should return 400")
-        request {
-            method 'POST'
-            url '/api/v1/trip'
-            headers{
-                contentType(applicationJson())
-            }
-            body(
-                    "destinationAddress":"Parking Lot, Hialeah, FL 33014",
-                    "userId":"123e4567-e89b-12d3-a456-426655440000"
-            )
-        }
-        response {
-            status 400
-        }
-    },
-    Contract.make {
-        description("When a POST request to api/trip missing ID hould return 400")
-        request {
-            method 'POST'
-            url '/api/v1/trip'
-            headers{
-                contentType(applicationJson())
-            }
-            body(
-                    "originAddress":"Smoke on the Water, 1630 Bell Tower Ln, Weston, FL 33326",
-                    "destinationAddress":"Parking Lot, Hialeah, FL 33014"
-            )
-        }
-        response {
-            status 400
-        }
-    },
-    Contract.make {
-        description("When a POST request to api/trip missing destination should return 400")
-        request {
-            method 'POST'
-            url '/api/v1/trip'
-            headers{
-                contentType(applicationJson())
-            }
-            body(
-                    "originAddress":"Smoke on the Water, 1630 Bell Tower Ln, Weston, FL 33326",
-                    "userId":"123e4567-e89b-12d3-a456-426655440000"
-            )
-        }
-        response {
-            status 400
-        }
+  request {
+    method 'POST'
+    url '/api/v1/trip'
+    body("""
+    {
+      "originAddress":"Weston, FL",
+      "destinationAddress":"Miami, FL",
+      "userId":"4eaf29bc-3909-49d4-a104-3d17f68ba672"
     }
+    """)
+    headers {
+      header('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzM2MTkwNDMsInVzZXJfbmFtZSI6InBhc3NlbmdlciIsImF1dGhvcml0aWVzIjpbIlJPTEVfUEFTU0VOR0VSIiwiUk9MRV9VU0VSIl0sImp0aSI6ImYwNjk2MTVjLTg0YTQtNGMzZS1iMmI0LTMyMWE0MzFhMGRkNCIsImNsaWVudF9pZCI6ImZyb250LWVuZCIsInNjb3BlIjpbIndlYmNsaWVudCJdfQ.0XlWE9xlBcMc6e82VwfK4-WqrQPY2k6-tgjTnWfl8iY')
+      header('Content-Type', 'application/json')
+    }
+  }
+  response {
+    status 201
+   }
+  }
 ]

@@ -7,7 +7,7 @@ import org.springframework.cloud.contract.spec.Contract
         description("When a PUT request for api/trip/completed/{id} should return 200")
         request {
             method 'PUT'
-            url '/api/v1/trip/completed/123e4567-e89b-12d3-a456-426655440000'
+            url '/api/v1/trip/completed/f849769e-2534-84a6-d475-5c2d701343ab'
         }
         response {
             status 200
